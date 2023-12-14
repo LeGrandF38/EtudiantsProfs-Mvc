@@ -1,6 +1,6 @@
 <?php
 
-abstract class Model {
+ class Model {
     public $id=0;
     private static $pdo=null;
 
@@ -35,29 +35,10 @@ abstract class Model {
         $stm->execute($data);
     }
 }
-// public function save(){
-//     $data = get_object_vars($this);
-//     $req = "";
-//     if ($this->id == 0) {
-//         $req = "INSERT INTO " . get_class($this) . " (";
-//         $fields = $values = "";
-//         foreach ($data as $key => $value) {
-//             $fields .= $key . ",";
-//             $values .= ":$key,";
-//         }
-//         $fields = rtrim($fields, ",");
-//         $values = rtrim($values, ",");
-//         $req .= $fields . ") VALUES (" . $values . ")";
-
-//         $stm = self::$pdo->prepare($req);
-//         $stm->execute($data);
-//     }
-// }
 
 
-    public function delete(){
 
-    }
+   
 
     public static function find($id){
         $req="select * from ".get_called_class()." where id=?";
@@ -76,9 +57,22 @@ abstract class Model {
 
 }
 
-    public static function all(){
-        
+public function delete(){
+    if ($this->id != 0) {
+        $req = "DELETE FROM " . get_class($this) . " WHERE id = :id";
+        $stm = self::$pdo->prepare($req);
+        $stm->execute(['id' => $this->id]);
     }
+}
+
+public static function all() {
+    $req = "SELECT * FROM " . static::class;
+    $pdo = (new self())->pdo;
+    $stmt = $pdo->prepare($req);
+    $stmt->execute();
+    $res = $stmt->fetchAll();
+    return $res;
+}
 }
 
 ?>
