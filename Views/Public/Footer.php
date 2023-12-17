@@ -1,1 +1,9 @@
-<h1>fOOTER</h1>
+<!-- footer.php -->
+
+<div class="footer">
+        <p>Faycal Yacouba Oumarou</p>
+    </div>
+
+</body>
+
+</html>

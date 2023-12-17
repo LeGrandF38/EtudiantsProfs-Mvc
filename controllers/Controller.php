@@ -1,23 +1,21 @@
-<?php
+<?php 
+
 abstract class Controller {
-    public function __construct(string $model){
-      
-    }
 
-    public function view(string $fichier, $data=null){
-     
-    }
+	
+	 public function __construct($model)
+	{
+		include_once ROOT.'./Models/'.$model.".php";
+	}
 
-    public function redirect($chimi){
-        // ....
-    }
+	public function view(string $fichier,$data=null){
+		echo "j execute view";
+		include_once ROOT."Views/".get_class($this)."/$fichier.php";
+	}
 
-    abstract public function index();
-    abstract public function show($id);
-    abstract public function create();
-    abstract public function store();
-    abstract public function edit($id);
-    abstract public function update($id);
-    abstract public function destroy($id);
+
+	public function Redirect($chemin)
+	{
+		header("Location:".$chemin);
+	}
 }
-?>

@@ -1,58 +1,82 @@
 <?php
- include_once 'controller.php';
-class Profs extends Controller {
-    public function __construct(){
-        parent::__construct('Prof');
+
+ class Profs extends Controller{
+
+	public function __construct(){
+		parent::__construct("Prof");
+	}
+
+
+	public function index() {
+        // echo "j execute intex";
+        $data= Prof::all();
+        // var_dump($r_all);
+        // $this->view("index" ,Prof::all());
+        include_once ROOT."Views/".get_class($this)."/index.php";
     }
 
-    public function index(){
+    public function show($id) {
+        $data= Prof::find($id);
+
+        include_once ROOT."Views/".get_class($this)."/show.php";
+    }
+
+    public function create() {
+         // echo "j execute crate";
+         $data= null;
+        //  $data= Prof::all();
+         // var_dump($r_all);
+         // $this->view("index" ,Prof::all());
+         include_once ROOT."Views/".get_class($this)."/form.php";
+   
+    }
+
+    public function store($request) {
+        $nom = $request->nom;
+        $prenom = $request->prenom;
+        $specialite = $request->specialite;
+    
+        $newProf = new Prof();
+        $newProf->nom = $nom;
+        $newProf->prenom = $prenom;
+        $newProf->specialite = $specialite;
+        $newProf->save();
+    
+        
+    }
+
+    public function edit($id) {
+         // echo "j execute crate";
        
-        $prof = Model::all();
-        $this->view('prof/index', ['prof' => $prof]);
+         $data= Prof::find($id);
+         // var_dump($r_all);
+         // $this->view("index" ,Prof::all());
+         include_once ROOT."Views/".get_class($this)."/form.php";
+   
     }
 
-    public function show($id){
-       
-        $prof = Model::find($id);
-        $this->view('prof/show', ['etudiant' => $prof]);
-    }
-
-    public function create(){
-        $this->view('prof/form');
-    }
-
-    public function store(){
-       
+    public function update($id, $request) {
         $prof = new Prof();
-        $prof->nom = $_POST['nom'];
-        $prof->prenom = $_POST['prenom'];
-        $prof->specialite = $_POST['specialite'];
-        $prof->save();
-
-        $this->redirect('prof/index');
+            $nom = $request->input('nom');
+            $prenom = $request->input('prenom');
+            $specialite = $request->input('specialite');
+    
+            $prof->nom = $nom;
+            $prof->prenom = $prenom;
+            $prof->specialite = $specialite;
+            $prof->update();
+    
+            $this->redirect('/profs');
+       
     }
+    
 
-    public function edit($id){
-        $etudiant = Model::find($id);
-        $this->view('prof/form', ['prof' => $prof, 'action' => 'edit']);
-    }
-
-    public function update($id){
-        $prof = Model::find($id);
-        $prof->nom = $_POST['nom'];
-        $prof->prenom = $_POST['prenom'];
-        $prof->specialite = $_POST['specialite'];
-        $prof->save();
-
-        $this->redirect('prof/index');
-    }
-
-    public function destroy($id){
-        $prof = Model::find($id);
-        $prof->delete();
-
-        $this->redirect('prof/index');
+    public function destroy($id) {
+        echo 'je suis destroy';
+        $P= Prof::find($id);
+        var_dump($P);
+        $P->delete();
+        $this->Redirect("../../Profs");
     }
 }
 
-?>
